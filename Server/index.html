@@ -14,6 +14,10 @@
       <input id="teaminput" autocomplete="off" placeholder="Get Team"/>
       <button>Send</button>
     </form>
+    <h3>Team list : </h3>
+    <p id="teamlist"></p>
+    <h3>Player list : </h3>
+    <p id="playerlist"></p>
   </body>
 </html>
 
@@ -36,5 +40,11 @@
     socket.emit('getteam', $('#teaminput').val());
     $('#teaminput').val('');
     return false;
+  });
+  socket.on('getteamlist', function(result){
+    $('#teamlist').text(result);
+  });
+  socket.on('getplayerlist', function(result){
+    $('#playerlist').text(result);
   });
 </script>
