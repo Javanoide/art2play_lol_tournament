@@ -1,7 +1,6 @@
 var app = require('express')();
-var model = require('./model.js');
 var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var socketconfig = require('./socket.js')(server);
 
 var port = 8000;
 
@@ -14,24 +13,6 @@ app.use(function(req, res, next) {
 
 app.get('/', function(req, res){
   res.sendfile('index.html');
-});
-
-io.sockets.on('connection', function(socket){
-
-  socket.on('subscribe', function(username, team){
-
-    model.subscribe(username, team, function (result){
-      console.log('Subscribe : ' + result.username + ' - ' + result.team + ' : ' + result.success);
-    });
-  });
-
-  socket.on('getteam', function(team){
-    model.getTeam(team, function(result){
-      console.log(result.response);
-      io.emit('getteam', result.response);
-    });
-  });
-
 });
 
 app.use(function(req, res, next){

@@ -25,9 +25,6 @@
   socket.on('getteam', function(memberlist){
     alert(memberlist);
   });
-  socket.on('news', function(msg){
-    alert(msg)
-  });
 
   $('#subscribe').submit(function(){
     socket.emit('subscribe', $('#name').val(), $('#team').val());
@@ -37,6 +34,7 @@
   });
   $('#getTeam').submit(function(){
     socket.emit('getteam', $('#teaminput').val());
+    $('#teaminput').val('');
     return false;
   });
 </script>
