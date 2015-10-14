@@ -1,9 +1,7 @@
-var express = require('express');
-var bodyParser = require('body-parser');
+var app = require('express')();
 var model = require('./model.js');
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
-
-var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
 var port = 8000;
 
@@ -14,21 +12,33 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.post('/', urlencodedParser, function(req, res){
-
-});
-
 app.get('/', function(req, res){
-  model.subscribe('florent', 'onifact', function(result){
-    console.log('test');
-  });
+  res.sendfile('index.html');
 });
 
+io.sockets.on('connection', function(socket){
+
+  socket.on('subscribe', function(username, team){
+
+    model.subscribe(username, team, function (result){
+      console.log('Subscribe : ' + result.username + ' - ' + result.team + ' : ' + result.success);
+    });
+  });
+
+  socket.on('getteam', function(team){
+    model.getTeam(team, function(result){
+      console.log(result.response);
+      io.emit('getteam', result.response);
+    });
+  });
+
+});
 
 app.use(function(req, res, next){
 	res.setHeader('Content-Type', 'text/plain');
 	res.status(404).send('Page not found');
 })
 
-app.listen(port);
-console.log('Server listen on : ' + port)
+server.listen(port, function(){
+  console.log('Server listen on : ' + port)
+});
