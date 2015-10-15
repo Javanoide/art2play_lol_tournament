@@ -1,5 +1,5 @@
 var redis = require('redis');
-var client = redis.createClient(6379, '127.0.0.1', {});
+var client = redis.createClient(6379, '78.193.226.46', {});
 
 module.exports.subscribe = function(username, team, callback){
   //inscription du joueur de une HM, contient nom de la team et autre si besoin (email, date de naissance, etc...)
