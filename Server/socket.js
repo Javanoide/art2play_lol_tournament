@@ -19,7 +19,6 @@ module.exports = function(server){
         console.log('Subscribe : ' + result.username + ' - ' + result.team + ' : ' + result.success);
         //mise à jour des autres clients
         model.getTeamList(function(result){
-          console.log(result.response);
           io.emit('getteamlist', result.response);
         });
         model.getPlayerList(function(result){
@@ -34,11 +33,37 @@ module.exports = function(server){
         socket.emit('getteam', result.response);
       });
     });
+    //suppresion d'une équipe et de TOUT les membres de l'équipe
+    socket.on('delteam', function(team){
+      model.delTeam(team, function(result){
+        socket.emit('delteam', result.response);
+        //broadcast des listes
+        model.getTeamList(function(result){
+          io.emit('getteamlist', result.response);
+        });
+        model.getPlayerList(function(result){
+          io.emit('getplayerlist', result.response);
+        });
+      });
+    });
     //récupération des détails d'un joueur
     socket.on('getuser', function(username){
       model.getUser(username, function(result){
         socket.emit('getuser', result.response);
       });
+    });
+    //Suppression d'un joueur
+    socket.on('deluser', function(username){
+      model.delUser(username, function(result){
+        socket.emit('deluser', result.response);
+        //broadcast des listes
+        model.getTeamList(function(result){
+          io.emit('getteamlist', result.response);
+        });
+        model.getPlayerList(function(result){
+          io.emit('getplayerlist', result.response);
+        });
+      })
     });
 
   });

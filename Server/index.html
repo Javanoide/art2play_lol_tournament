@@ -14,6 +14,14 @@
       <input id="teaminput" autocomplete="off" placeholder="Get Team"/>
       <button>Send</button>
     </form>
+    <form id="delTeam" action="">
+      <input id="delteaminput" autocomplete="off" placeholder="Delete a team"/>
+      <button>Delete</button>
+    </form>
+    <form id="delUser" action="">
+      <input id="deluserinput" autocomplete="off" placeholder="Delete an user"/>
+      <button>Delete</button>
+    </form>
     <h3>Team list : </h3>
     <p id="teamlist"></p>
     <h3>Player list : </h3>
@@ -33,12 +41,20 @@
   $('#subscribe').submit(function(){
     socket.emit('subscribe', $('#name').val(), $('#team').val());
     $('#name').val('');
-    $('#team').val('');
+    //$('#team').val('');
     return false;
   });
   $('#getTeam').submit(function(){
     socket.emit('getteam', $('#teaminput').val());
     $('#teaminput').val('');
+    return false;
+  });
+  $('#delTeam').submit(function(){
+    socket.emit('delteam', $('#delteaminput').val());
+    return false;
+  });
+  $('#delUser').submit(function(){
+    socket.emit('deluser', $('#deluserinput').val());
     return false;
   });
   socket.on('getteamlist', function(result){
