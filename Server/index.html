@@ -10,6 +10,14 @@
       <input id="team" autocomplete="off" placeholder="Team name" />
       <button>Send</button>
     </form>
+    <form id="matchform" action="">
+      <input id="game" autocomplete="off" placeholder="Game"/>
+      <input id="date" autocomplete="off" placeholder="Date" />
+      <input id="teamA" autocomplete="off" placeholder="Team A" />
+      <input id="teamB" autocomplete="off" placeholder="Team B" />
+      <input id="title" autocomplete="off" placeholder="Title" />
+      <button>Send</button>
+    </form>
     <form id="getTeam" action="">
       <input id="teaminput" autocomplete="off" placeholder="Get Team"/>
       <button>Send</button>
@@ -26,6 +34,8 @@
     <p id="teamlist"></p>
     <h3>Player list : </h3>
     <p id="playerlist"></p>
+    <h3>Matchs list : </h3>
+    <p id="matchslist"></p>
   </body>
 </html>
 
@@ -62,5 +72,14 @@
   });
   socket.on('getplayerlist', function(result){
     $('#playerlist').text(result);
+  });
+  socket.on('getmatchs', function(result){
+    $('#matchslist').text(result);
+  });
+  $('#matchform').submit(function(){
+    socket.emit('setmatch', $('#game').val(), $('#date').val(), $('#teamA').val(), $('#teamB').val(), $('#title').val());
+  });
+  $(window).on('beforeunload', function(){
+    socket.close();
   });
 </script>

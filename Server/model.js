@@ -93,3 +93,55 @@ module.exports.getPlayerList= function(callback){
     }
   });
 };
+
+module.exports.setMatch = function(game, date, teamA, teamB, title, callback){
+  client.incrby('matchNumber', 1, function(err, number){
+    client.hmset('match:' + number, 'game', game, 'date', date, 'teamA', teamA, 'teamB', teamB, 'title', title);
+    client.zadd('matchsforgame:' + game, Date.now(), number);
+    client.zadd('matchs', Date.now(), number);
+    callback({success : true});
+  });
+};
+
+module.exports.getMatch = function(number, callback){
+  client.hgetall('match:' + number, function (err, response){
+    if(!err){
+      callback({success : true, response : response});
+    }else{
+      callback({success : false});
+    }
+  });
+};
+
+module.exports.getMatchsForGame = function(game, callback){
+  client.zrange('matchsforgame:' + game, 0, -1, function (err, response){
+    if(!err){
+      callback({success : true, response : response});
+    }else{
+      callback({success : false});
+    }
+  });
+};
+
+module.exports.getMatchs = function(game, callback){
+  var matchTab = [];
+  client.zrange('matchs', 0, -1, function (err, response){
+    if(!err){
+      async.each(response, function(value, asyncCallback){
+        client.hgetall('match:' + value, function(err, response){
+          matchTab.push(response);
+        });
+        asyncCallback();
+      },function(err){
+        if(err){
+          successDel = false;
+        }else{
+          successDel = true;
+        }
+      });
+      callback({success : true, response : matchTab});
+    }else{
+      callback({success : false});
+    }
+  });
+};

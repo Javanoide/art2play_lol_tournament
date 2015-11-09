@@ -65,6 +65,26 @@ module.exports = function(server){
         });
       })
     });
+    //ajout match
+    socket.on('setmatch', function(game, date, teamA, teamB, title){
+      model.setMatch(game, date, teamA, teamB, title, function(result){
+        //io.emit('getmatchs', result.response);
+      });
+    });
+
+    //récupérer un match par rapport au joueur
+    socket.on('getmatchsforgame', function (game){
+      model.getMatchsForGame(game, function(result){
+        socket.emit('getmatchsforgame', result.response);
+      });
+    });
+    //récupérer tout les matchs
+    socket.on('getmatchs', function(){
+      console.log('test socket');
+      model.getMatchs(function(result){
+        io.emit('getmatchs', result.response);
+      });
+    });
 
   });
 };
