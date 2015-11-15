@@ -1,8 +1,10 @@
+var config = require('./config')();
 var app = require('express')();
 var server = require('http').createServer(app);
-var socketconfig = require('./socket.js')(server);
 
-var port = 8000;
+var model = require('./model')(config.redis);
+var socketconfig = require('./socket')(server, model);
+
 
 //enabling cors
 app.use(function(req, res, next) {
@@ -12,7 +14,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/', function(req, res){
-  res.sendfile('index.html');
+  res.sendFile(__dirname + '/index.html');
 });
 
 app.use(function(req, res, next){
@@ -20,6 +22,6 @@ app.use(function(req, res, next){
 	res.status(404).send('Page not found');
 })
 
-server.listen(port, function(){
-  console.log('Server listen on : ' + port)
+server.listen(config.port, function(){
+  console.log('Server listen on : ' + config.port)
 });
