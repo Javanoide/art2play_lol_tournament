@@ -1,0 +1,34 @@
+
+body {
+    margin-top: 60px; /* Required margin for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    background-color:transparent;
+}
+
+nav{
+	background-color:#555;
+}
+nav li a {
+	color:#fff;
+}
+nav li a:hover{
+	color:#000;
+	background-color:#ccc;
+}
+
+.full {
+    background: url('../img/bg2.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+.main{
+	margin:0;
+}
+#live .match {
+	border : 1px solid #CCC;
+	padding:15px 0;
+	margin-bottom: 10px;
+	text-align:center;
+	font-size:30px;
+}
