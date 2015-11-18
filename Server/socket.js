@@ -8,8 +8,12 @@ module.exports = function(server, model){
     });
     //envoie la liste de équipes
     model.getTeamList(function(result){
-      console.log(result.response);
       socket.emit('getteamlist', result.response);
+    });
+
+    //récupérer tout les matchs
+    model.getMatchs(function(result){
+      socket.emit('getmatchlist', result.response);
     });
 
     //Inscription d'un joeur
@@ -75,13 +79,6 @@ module.exports = function(server, model){
     socket.on('getmatchsforgame', function (game){
       model.getMatchsForGame(game, function(result){
         socket.emit('getmatchsforgame', result.response);
-      });
-    });
-    //récupérer tout les matchs
-    socket.on('getmatchs', function(){
-      console.log('test socket');
-      model.getMatchs(function(result){
-        io.emit('getmatchs', result.response);
       });
     });
 

@@ -73,8 +73,8 @@
   socket.on('getplayerlist', function(result){
     $('#playerlist').text(result);
   });
-  socket.on('getmatchs', function(result){
-    $('#matchslist').text(result);
+  socket.on('getmatchlist', function(result){
+    $('#matchslist').text(JSON.stringify(result));
   });
   $('#matchform').submit(function(){
     socket.emit('setmatch', $('#game').val(), $('#date').val(), $('#teamA').val(), $('#teamB').val(), $('#title').val());

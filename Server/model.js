@@ -74,7 +74,7 @@ module.exports = function(redisConf) {
           client.zrem('teamlist', team)
           client.del('team:' + team, function(err, result){});
           callback({success : successDel});
-      })
+      });
     },
 
     getTeamList: function(callback){
@@ -126,23 +126,24 @@ module.exports = function(redisConf) {
       });
     },
 
-    getMatchs: function(game, callback){
+    getMatchs: function(callback){
       var matchTab = [];
+      var successAdd = false;
       client.zrange('matchs', 0, -1, function (err, response){
         if(!err){
           async.each(response, function(value, asyncCallback){
             client.hgetall('match:' + value, function(err, response){
               matchTab.push(response);
+              asyncCallback();
             });
-            asyncCallback();
           },function(err){
-            if(err){
-              successDel = false;
+            if(!err){
+              successAdd = true;
             }else{
-              successDel = true;
+              successAdd = false;
             }
+            callback({success : true, response : matchTab});
           });
-          callback({success : true, response : matchTab});
         }else{
           callback({success : false});
         }
