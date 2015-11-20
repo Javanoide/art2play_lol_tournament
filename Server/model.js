@@ -73,7 +73,7 @@ module.exports = function(redisConf) {
           });
           client.zrem('teamlist', team)
           client.del('team:' + team, function(err, result){});
-          callback({success : successDel});
+          callback({success : successDel, response : team});
       });
     },
 
@@ -96,7 +96,7 @@ module.exports = function(redisConf) {
         }
       });
     },
-
+    
     setMatch: function(game, date, teamA, teamB, title, callback){
       client.incrby('matchNumber', 1, function(err, number){
         client.hmset('match:' + number, 'game', game, 'date', date, 'teamA', teamA, 'teamB', teamB, 'title', title);

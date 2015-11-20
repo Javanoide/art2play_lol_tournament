@@ -25,7 +25,7 @@ nav li a:hover{
 .main{
 	margin:0;
 }
-#live .match {
+.match {
 	border : 1px solid #CCC;
 	padding:15px 0;
 	margin-bottom: 10px;

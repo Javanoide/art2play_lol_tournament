@@ -1,5 +1,6 @@
 module.exports = function(server, model){
   var io = require('socket.io')(server);
+  var async = require ('async');
 
   io.sockets.on('connection', function(socket){
     //envoie la liste des joueurs
@@ -8,8 +9,14 @@ module.exports = function(server, model){
     });
     //envoie la liste de équipes
     model.getTeamList(function(result){
-      socket.emit('getteamlist', result.response);
-    });
+        socket.emit('getteamlist', result.response);
+        async.each(result.response, function(value, asyncCallback){
+        	model.getTeam(value, function(result2){
+        		var out = {name:value, players:result2.response};
+                socket.emit('getteam', out);
+              });
+          });
+      });
 
     //récupérer tout les matchs
     model.getMatchs(function(result){
@@ -23,6 +30,12 @@ module.exports = function(server, model){
         //mise à jour des autres clients
         model.getTeamList(function(result){
           io.emit('getteamlist', result.response);
+          async.each(result.response, function(value, asyncCallback){
+          	model.getTeam(value, function(result2){
+          		var out = {name:value, players:result2.response};
+                  io.emit('getteam', out);
+                });
+            });
         });
         model.getPlayerList(function(result){
           io.emit('getplayerlist', result.response);
@@ -39,10 +52,16 @@ module.exports = function(server, model){
     //suppresion d'une équipe et de TOUT les membres de l'équipe
     socket.on('delteam', function(team){
       model.delTeam(team, function(result){
-        socket.emit('delteam', result.response);
+        io.emit('delteam', result.response);
         //broadcast des listes
         model.getTeamList(function(result){
           io.emit('getteamlist', result.response);
+          async.each(result.response, function(value, asyncCallback){
+          	model.getTeam(value, function(result2){
+          		var out = {name:value, players:result2.response};
+                  io.emit('getteam', out);
+                });
+            });
         });
         model.getPlayerList(function(result){
           io.emit('getplayerlist', result.response);
@@ -58,10 +77,16 @@ module.exports = function(server, model){
     //Suppression d'un joueur
     socket.on('deluser', function(username){
       model.delUser(username, function(result){
-        socket.emit('deluser', result.response);
+        io.emit('deluser', result.response);
         //broadcast des listes
         model.getTeamList(function(result){
           io.emit('getteamlist', result.response);
+          async.each(result.response, function(value, asyncCallback){
+          	model.getTeam(value, function(result2){
+          		var out = {name:value, players:result2.response};
+                  io.emit('getteam', out);
+                });
+            });
         });
         model.getPlayerList(function(result){
           io.emit('getplayerlist', result.response);
@@ -71,7 +96,9 @@ module.exports = function(server, model){
     //ajout match
     socket.on('setmatch', function(game, date, teamA, teamB, title){
       model.setMatch(game, date, teamA, teamB, title, function(result){
-        //io.emit('getmatchs', result.response);
+    	  model.getMatchs(function(result2){
+    	      socket.emit('getmatchlist', result2.response);
+    	    });
       });
     });
 

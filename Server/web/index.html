@@ -17,6 +17,9 @@
 
     <!-- Custom CSS -->
     <link href="css/full.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -66,24 +69,12 @@
                             <input type="text" class="form-control" id="player-name" placeholder="Player Name">
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-sm-12">
-                        <button type="button" class="btn btn-default btn-block">Register</button>
+                        <button type="button" class="btn btn-default btn-block" id="register-player">Register</button>
                     </div>
                 </div>
                 <hr>
-                <div class="row m-t">
-                    <div class="col-sm-3">
-                        <div class="card card-block">
-                            <h4 class="card-title">Team Name</h4>
-                            <p class="card-text">Name 1</p>
-                            <p class="card-text">Name 1</p>
-                            <p class="card-text">Name 1</p>
-                            <p class="card-text">Name 1</p>
-                            <p class="card-text">Name 1</p>
-                        </div>
-                    </div>
+                <div class="row m-t" id="teamlist">
                 </div>
             </div>
             <div id="live">
@@ -138,6 +129,42 @@
                     </div>
                 </div>
             </div>
+            <div id="matchs" style="display:none">
+                <div class="row match">
+                    <div class="col-sm-5">
+                        <select name="teamA" id="teamA" class="form-control teams">
+                        	<option value="">Team A</option>
+                        	<option value="">Team B</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        VS
+                    </div>
+                    <div class="col-sm-5">
+                        <select name="teamB" id="teamB" class="form-control teams">
+                        	<option value="">Team A</option>
+                        	<option value="">Team B</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <select name="game" id="game" class="form-control games">
+                        	<option value="League of Legends">League of Legends</option>
+                        	<option value="Minecraft">Minecraft</option>
+                        	<option value="Team Fortress 2">Team Fortress 2</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <input class="form-control" type="time" name="time" value="00:00" id="time"/>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-4">
+                        <button type="button" class="btn btn-default btn-block" id="register-match">Save</button>
+                    </div>
+                </div>
+                <hr />
+                <div id="matchslist">
+                	
+                </div>
+            </div>
         </div>
         <div class="col-sm-2 hidden-xs-down">
             <img class="img-responsive" src="img/logo/4.jpg" alt="">
@@ -152,6 +179,9 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    
+    <!-- Socket Io -->
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 
     <!-- Custom JS -->
     <script src="js/custom.js"></script> 

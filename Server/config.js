@@ -4,7 +4,7 @@ module.exports = function() {
   return env.getOrElseAll({
     port: 8000,
     redis: {
-      host: '78.193.226.46',
+      host: 'localhost',
       port: 6379,
       auth_pass: null
     }
