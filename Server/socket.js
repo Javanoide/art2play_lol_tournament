@@ -97,11 +97,21 @@ module.exports = function(server, model){
     socket.on('setmatch', function(game, date, teamA, teamB, title){
       model.setMatch(game, date, teamA, teamB, title, function(result){
     	  model.getMatchs(function(result2){
-    	      socket.emit('getmatchlist', result2.response);
+    	      io.emit('getmatchlist', result2.response);
     	    });
       });
     });
-
+    //del match
+    socket.on('delmatch', function(number){
+        model.delMatch(number, function(result){
+          io.emit('delmatch', result.response);
+          //broadcast des listes
+          model.getMatchs(function(result){
+              io.emit('getmatchlist', result.response);
+            });
+        })
+      });
+    
     //récupérer un match par rapport au joueur
     socket.on('getmatchsforgame', function (game){
       model.getMatchsForGame(game, function(result){

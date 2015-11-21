@@ -1,11 +1,18 @@
+::-webkit-scrollbar { 
+    display: none; 
+}
 
 body {
-    margin-top: 60px; /* Required margin for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    margin-top: 56px; /* Required margin for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
     background-color:transparent;
+    font-family: 'Roboto', sans-serif;
 }
 
 nav{
 	background-color:#555;
+}
+nav .navbar-brand {
+	color:#fff;
 }
 nav li a {
 	color:#fff;
@@ -14,7 +21,18 @@ nav li a:hover{
 	color:#000;
 	background-color:#ccc;
 }
+nav li a:focus{
+	color:#fff;
+}
 
+
+.side-column{
+	background-color:#ddd;
+	min-height:1024px;
+}
+.middle-column{
+	margin-top:30px;
+}
 .full {
     background: url('../img/bg2.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
@@ -31,4 +49,14 @@ nav li a:hover{
 	margin-bottom: 10px;
 	text-align:center;
 	font-size:30px;
+	background-position:center;
+}
+.lol{
+	background-image: url("/img/bg-lol.jpg");
+}
+.tf2{
+	background-image: url("/img/bg-tf2.jpg");
+}
+.minecraft{
+	background-image: url("/img/bg-minecraft.jpg");
 }

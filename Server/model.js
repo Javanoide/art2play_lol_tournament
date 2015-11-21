@@ -115,6 +115,12 @@ module.exports = function(redisConf) {
         }
       });
     },
+    
+    delMatch: function(number, callback){
+    	  client.zrem('matchs', number);
+          client.del('match:' + number, function(err, result){});
+          callback({success : true});
+      },
 
     getMatchsForGame: function(game, callback){
       client.zrange('matchsforgame:' + game, 0, -1, function (err, response){
@@ -133,6 +139,7 @@ module.exports = function(redisConf) {
         if(!err){
           async.each(response, function(value, asyncCallback){
             client.hgetall('match:' + value, function(err, response){
+              response.number = value;
               matchTab.push(response);
               asyncCallback();
             });
